@@ -42,7 +42,9 @@
         <button
           type="button"
           class="btn btn-primary btn-margin"
-          :disabled="loading"
+          :disabled="loading || cashOutBtnDisabled"
+          @mouseover="onCashoutHover"
+          :style="cashoutStyle"
         >
           CASH OUT
         </button>
@@ -50,7 +52,6 @@
     </div>
     <div class="row mx-4 my-2">
       <div>Credit: {{ credit }}</div>
-      <div>Cashed out credit: {{ userCredit }}</div>
     </div>
   </div>
 </template>
@@ -63,9 +64,9 @@ export default {
     const publicPath = process.env.BASE_URL;
 
     let credit = ref(10);
-    let userCredit = ref(0);
 
     let loading = ref(false);
+    let cashOutBtnDisabled = ref(false);
 
     const slots = [
       {
@@ -93,6 +94,8 @@ export default {
     let firstSignIdx = ref(randomIntFromInterval(0, 3));
     let secondSignIdx = ref(randomIntFromInterval(0, 3));
     let thirdSignIdx = ref(randomIntFromInterval(0, 3));
+
+    let cashoutStyle = ref("");
 
     async function pullLever() {
       loading.value = true;
@@ -288,6 +291,20 @@ export default {
       }
     }
 
+    function onCashoutHover() {
+      cashoutStyle.value = "";
+      const randomNumber = Math.random();
+
+      // 50 Percent chance
+      if (randomNumber <= 0.5) {
+        const randomDir = getRandomDirection();
+        cashoutStyle.value = `display: block; position: fixed; ${randomDir}: 300px;`;
+        // 40 Percent chance
+      } else if (randomNumber <= 0.9) {
+        cashOutBtnDisabled.value = true;
+      }
+    }
+
     function randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
@@ -304,15 +321,24 @@ export default {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
+    function getRandomDirection() {
+      const direction = ["right", "left", "up", "down"];
+      const randomNumber = randomIntFromInterval(0, 3);
+
+      return direction[randomNumber];
+    }
+
     return {
       credit,
-      userCredit,
       slots,
       firstSignIdx,
       secondSignIdx,
       thirdSignIdx,
       pullLever,
       loading,
+      cashOutBtnDisabled,
+      onCashoutHover,
+      cashoutStyle,
     };
   },
 };

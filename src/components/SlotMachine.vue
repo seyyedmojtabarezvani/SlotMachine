@@ -48,7 +48,10 @@
         </button>
       </div>
     </div>
-    <div class="row mx-4 my-2">Credit: {{ credit }}</div>
+    <div class="row mx-4 my-2">
+      <div>Credit: {{ credit }}</div>
+      <div>Cashed out credit: {{ userCredit }}</div>
+    </div>
   </div>
 </template>
 
@@ -60,6 +63,7 @@ export default {
     const publicPath = process.env.BASE_URL;
 
     let credit = ref(10);
+    let userCredit = ref(0);
 
     let loading = ref(false);
 
@@ -302,6 +306,7 @@ export default {
 
     return {
       credit,
+      userCredit,
       slots,
       firstSignIdx,
       secondSignIdx,

@@ -30,15 +30,20 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4" v-if="credit > 0">
         <button
           type="button"
           class="btn btn-success btn-margin"
           @click="pullLever"
+          :disabled="loading"
         >
           Play
         </button>
-        <button type="button" class="btn btn-primary btn-margin">
+        <button
+          type="button"
+          class="btn btn-primary btn-margin"
+          :disabled="loading"
+        >
           CASH OUT
         </button>
       </div>
@@ -55,6 +60,8 @@ export default {
     const publicPath = process.env.BASE_URL;
 
     let credit = ref(10);
+
+    let loading = ref(false);
 
     const slots = [
       {
@@ -84,6 +91,8 @@ export default {
     let thirdSignIdx = ref(randomIntFromInterval(0, 3));
 
     async function pullLever() {
+      loading.value = true;
+
       let jackpot = false;
       if (credit.value < 40) {
         jackpot = await doNormalspin();
@@ -98,6 +107,8 @@ export default {
       } else {
         deduceCreditByOne();
       }
+
+      loading.value = false;
     }
 
     async function doNormalspin() {
@@ -296,6 +307,7 @@ export default {
       secondSignIdx,
       thirdSignIdx,
       pullLever,
+      loading,
     };
   },
 };

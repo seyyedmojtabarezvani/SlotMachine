@@ -160,9 +160,18 @@ export default {
 
     async function do30PercentSpinEffect() {
       // For fairness in the beginning we choose our result
-      const firstResult = randomIntFromInterval(0, 3);
-      const secondResult = randomIntFromInterval(0, 3);
-      const thirdResult = randomIntFromInterval(0, 3);
+      let firstResult = randomIntFromInterval(0, 3);
+      let secondResult = randomIntFromInterval(0, 3);
+      let thirdResult = randomIntFromInterval(0, 3);
+
+      // If User wins
+      if (firstResult === secondResult && secondResult === thirdResult) {
+        if (do30PercentChanceRoll()) {
+          firstResult = randomIntFromInterval(0, 3);
+          secondResult = randomIntFromInterval(0, 3);
+          thirdResult = randomIntFromInterval(0, 3);
+        }
+      }
 
       // This is just the visual effect
       let firstSignSpin = setInterval(function () {
@@ -188,6 +197,16 @@ export default {
       await sleep(1000);
       clearInterval(thirdSignSpin);
       thirdSignIdx.value = thirdResult;
+    }
+
+    function do30PercentChanceRoll() {
+      const randomNumber = Math.random();
+
+      if (randomNumber <= 0.3) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
     async function do60Percentspin() {
@@ -205,9 +224,18 @@ export default {
 
     async function do60PercentSpinEffect() {
       // For fairness in the beginning we choose our result
-      const firstResult = randomIntFromInterval(0, 3);
-      const secondResult = randomIntFromInterval(0, 3);
-      const thirdResult = randomIntFromInterval(0, 3);
+      let firstResult = randomIntFromInterval(0, 3);
+      let secondResult = randomIntFromInterval(0, 3);
+      let thirdResult = randomIntFromInterval(0, 3);
+
+      // If User wins
+      if (firstResult === secondResult && secondResult === thirdResult) {
+        if (do60PercentChanceRoll()) {
+          firstResult = randomIntFromInterval(0, 3);
+          secondResult = randomIntFromInterval(0, 3);
+          thirdResult = randomIntFromInterval(0, 3);
+        }
+      }
 
       // This is just the visual effect
       let firstSignSpin = setInterval(function () {
@@ -233,6 +261,16 @@ export default {
       await sleep(1000);
       clearInterval(thirdSignSpin);
       thirdSignIdx.value = thirdResult;
+    }
+
+    function do60PercentChanceRoll() {
+      const randomNumber = Math.random();
+
+      if (randomNumber <= 0.6) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
     function randomIntFromInterval(min, max) {
